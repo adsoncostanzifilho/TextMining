@@ -1,0 +1,104 @@
+require("stringr")
+require("shiny")
+require("shinydashboard")
+require("twitteR")
+require("wordcloud2")
+require("SnowballC")
+require("tm")
+require("radarchart")
+#require("xlsx")
+
+api_key <- "z46dsBLPPgCPueBGAYYdy2GRO"
+api_secret <- "79pJneOL2TiSMg21FygLuCKGVEqmrVxzQRwkoVbOZgae1fyOfb"
+access_token <- "4426540941-dbHY0iC6tWR0BzyLjvjschi4sESjEJKuXC4Cb00"
+access_secret <- "KvLgOFeUYMGNaV4VGyT80Zz2iDJ95CykPsg3Lv3loG0f7"
+setup_twitter_oauth(api_key, api_secret, access_token, access_secret)
+
+dashboardPage(
+  dashboardHeader(title="Text Mining Tool"),
+
+  dashboardSidebar(
+    sidebarMenu(
+      menuItem("Home", tabName = "home", icon = icon("home")),
+      menuItem("Search", tabName = "search", icon = icon("search")),
+      menuItem("Word Cloud", tabName = "cloud", icon = icon("cloud")),
+      menuItem("Sentimental Analysis", tabName = "sentimental", icon = icon("eye"))
+    )
+  ),
+  
+  ## Body content
+  dashboardBody(
+    tags$style(type="text/css",
+               ".shiny-output-error { visibility: hidden; }",
+               ".shiny-output-error:before { visibility: hidden; }"),
+    tabItems(
+      # First tab content
+      tabItem(tabName = "home",
+              h2("Home"),
+              
+              fluidRow(
+                h5("This Interface was developed by Adson Costanzi Filho, in order to estimulate researches in text mining area.",align = "center"),
+                h5("For more information contact: adsonfilho@yahoo.com.br",align = "center")
+              )
+              
+      ),
+      
+      
+      # First tab 2
+      tabItem(tabName = "search",
+              h2("Search Twitter"),
+              
+              fluidRow(
+                box(
+
+                  textInput("text", "Word to Search in Twitter:")
+                )
+              ),
+              fluidRow(
+                box(
+                  selectInput("lang","Select language:",c("Portuguese"="pt","Spanish"="es","English"="en"))
+                )
+              ),
+              fluidRow(
+                box(
+                  sliderInput("n", "Number of tweets to search:", 1, 1000, 100)
+                )
+              ),
+            
+              submitButton(text = h4 ('Search')),
+              tags$hr(),
+              h3(textOutput("tamanho_base"),style = "color:navy"),
+              tags$hr(),
+              tableOutput("table"),
+              downloadButton("tweets","Download Tweets")
+      ),
+      
+      # Second tab content
+      tabItem(tabName = "cloud",
+              h2("Word Cloud"),
+              
+              fluidRow(
+                box(
+                  sliderInput("freq_min", "Minimum frequency to build the Word Cloud:", 1, 100, 5)
+                ),
+                tags$hr(),
+                submitButton(text = h4 ('Refresh'))
+              ),
+              
+              downloadButton("freq_palavras","Download Tweets"),
+              tags$hr(),
+              
+              wordcloud2Output("grafico1")
+      ),
+      
+      # Second tab content
+      tabItem(tabName = "sentimental",
+              h2("Sentimental Analysis"),
+              
+              chartJSRadarOutput("grafico2")
+              
+      )
+    )
+  )
+) 
+

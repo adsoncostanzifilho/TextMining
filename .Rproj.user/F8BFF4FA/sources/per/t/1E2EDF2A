@@ -1,0 +1,23 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1544753075701.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3304035977",
+    "id" : "1E2EDF2A",
+    "lastKnownWriteTime" : 1545174269,
+    "last_content_update" : 1545174269661,
+    "path" : "~/shiny/Text_Mining/scripts/global.R",
+    "project_path" : "scripts/global.R",
+    "properties" : {
+        "cursorPosition" : "25,1",
+        "scrollLine" : "15",
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

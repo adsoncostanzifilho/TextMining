@@ -1,0 +1,311 @@
+require("stringr")
+require("shiny")
+require("shinydashboard")
+require("twitteR")
+require("wordcloud2")
+require("SnowballC")
+require("tm")
+require("radarchart")
+require("xlsx")
+
+
+#Sys.setlocale(category='LC_ALL','portuguese')
+
+shinyServer(function(input, output, session)
+{
+
+  #PESQUISA
+ 
+    pesquisa<-reactive({
+      
+      #busca no twitter
+      withProgress(message = 'Searching Tweets',
+                   detail = 'This may take a while...', value = 0, {
+      tempo_zero=Sys.time()               
+                     incProgress(0.5)
+      rdmTweets = searchTwitter(input$text, lang = input$lang, n = input$n)
+      
+      user_pesq=input$text
+      
+      #transforma os tweets em data.frame 
+      df <- do.call("rbind", lapply(rdmTweets, as.data.frame))
+      tempo_final=Sys.time()
+      tempo=tempo_final-tempo_zero
+      dt_informacoes=data.frame(tempo,user_pesq)
+      write.table(dt_informacoes,file="log_pesquisa.txt",append = TRUE,row.names = FALSE,col.names = FALSE)
+      return(df)
+                   })#progress
+      
+      
+    })
+  
+  #TWEETS TRADADOS
+    
+    tweets_trat<-reactive({
+      df=pesquisa()
+      dados=df
+      
+  ###limpeza da base de dados###
+      myCorpus <- Corpus(VectorSource(df$text))
+      
+      # remove URLs
+      removeURL <- function(x) gsub("http[[:alnum:]]*","",x)
+      myCorpus <- tm_map(myCorpus, content_transformer(removeURL))
+      
+      # remove NUM e Pont
+      removNumPont<-function(x) gsub("[^[:alpha:][:space:]]*","",x)
+      myCorpus<-tm_map(myCorpus,content_transformer(removNumPont))
+      
+      # remove espaço duplo
+      myCorpus<-tm_map(myCorpus,stripWhitespace)
+      
+      # remove punctuation
+      #myCorpus <- tm_map(myCorpus, removePunctuation)
+      
+      # maiuscula->minuscula
+      for(i in 1:length(letters))
+      {
+        da <- function(x) str_replace_all(x,LETTERS[i],letters[i])
+        myCorpus <- tm_map(myCorpus, da)
+      }
+      
+      # remove stopwords
+      myStopwords <- c(stopwords(input$lang),"rt",input$text)
+      myCorpus <- tm_map(myCorpus, removeWords, myStopwords)
+      
+      # remove accentuation
+      # remove accentuation í
+      da <- function(x) str_replace_all(x,"[í]","i")
+      myCorpus <- tm_map(myCorpus, da)
+      # remove accentuation á
+      da <- function(x) str_replace_all(x,"[á]","a")
+      myCorpus <- tm_map(myCorpus, da)
+      # remove accentuation ó
+      da <- function(x) str_replace_all(x,"[ó]","o")
+      myCorpus <- tm_map(myCorpus, da)
+      # remove accentuation ú
+      da <- function(x) str_replace_all(x,"[ú]","u")
+      myCorpus <- tm_map(myCorpus, da)
+      # remove accentuation é
+      da <- function(x) str_replace_all(x,"[é]","e")
+      myCorpus <- tm_map(myCorpus, da)
+      # remove accentuation ç
+      da <- function(x) str_replace_all(x,"[ç]","c")
+      myCorpus <- tm_map(myCorpus, da)
+      # remove accentuation ´
+      da <- function(x) str_replace_all(x,"[´]"," ")
+      myCorpus <- tm_map(myCorpus, da)
+      # remove accentuation ã
+      da <- function(x) str_replace_all(x,"[ã]","a")
+      myCorpus <- tm_map(myCorpus, da)
+      # remove accentuation õ
+      da <- function(x) str_replace_all(x,"[õ]","o")
+      myCorpus <- tm_map(myCorpus, da)
+      # remove accentuation â
+      da <- function(x) str_replace_all(x,"[â]","a")
+      myCorpus <- tm_map(myCorpus, da)
+      # remove accentuation ô
+      da <- function(x) str_replace_all(x,"[ô]","o")
+      myCorpus <- tm_map(myCorpus, da)
+      # remove accentuation ê
+      da <- function(x) str_replace_all(x,"[ê]","e")
+      myCorpus <- tm_map(myCorpus, da)
+      # remove accentuation ü
+      da <- function(x) str_replace_all(x,"[ü]","u")
+      myCorpus <- tm_map(myCorpus, da)
+
+      return(myCorpus)
+      
+    })
+    
+    
+    
+    
+# FREQUENCIA PALAVRAS
+    
+  palavras_freq<-reactive({
+    myCorpus<-tweets_trat()
+    freq_min<-input$freq_min
+    
+    dictCorpus <- myCorpus
+    myCorpus <- tm_map(myCorpus, stemDocument)
+    
+    corpus_clean <- tm_map(myCorpus, PlainTextDocument)
+    myDtm <- TermDocumentMatrix(corpus_clean, control = list(minWordLength = 1,tolower=TRUE))
+    
+    m <- as.matrix(myDtm)
+    v <- sort(rowSums(m), decreasing=TRUE)
+    myNames <- names(v)
+    d <- data.frame(word=myNames, freq=v)
+    return(d)
+  })  
+
+    
+    
+  # GRAFICO - WORDCLOUD #  
+    word_cloud<-reactive({
+      withProgress(message = 'Making Word Cloud',
+                   detail = 'This may take a while...', value = 0, {
+      incProgress(0.5)
+      freq_min=input$freq_min
+      d<-palavras_freq() 
+      
+      grafico1=wordcloud2(d,minSize=freq_min) })#progress
+      
+      return(grafico1)
+    })
+
+  ## RADAR CHART ##
+    
+    radar<-reactive({
+      dados<-tweets_trat()
+      
+      ###função que computa o score
+      
+      if(input$lang=='pt')
+      {
+        palavras <- read.csv("Portugues.csv",sep=";")
+      }
+      
+      if(input$lang=='es')
+      {
+        palavras <<- read.csv("Espanhol.csv",sep=";")
+      }
+      
+      if(input$lang=='en')
+      {
+        palavras = read.csv("Ingles.csv",sep=";")
+      }
+      
+      sentiment<-function(frase)
+      {
+        score=data.frame(t(rep(0,10)))
+        colnames(score)=c("Positive", "Negative","Anger", "Anticipation", "Disgust", "Fear",
+                          "Joy", "Sadness", "Surprise", "Trust")
+        
+        frase_div=strsplit(frase," ")
+        frase_div=unlist(frase_div)
+        linhas=match(frase_div,palavras$word)
+        linhas=as.vector(na.omit(linhas))
+        score=as.data.frame(lapply(palavras[linhas,-1],sum))
+        
+        return(score)
+      }
+      #####
+      
+      #faz score de cada twitee
+      score_sent=as.list(NULL)
+      
+      withProgress(message = 'Estimating Sentiments',
+                   detail = 'This may take a while...', value = 0, {
+      
+      for( i in 1:length(dados))
+      {
+        incProgress(1/length(dados))  
+        
+        score_sent[[i]]=data.frame(t(rep(0,10)))
+        colnames(score_sent[[i]])=c("positive", "negative","anger", "anticipation", "disgust", "fear","joy", "sadness", "surprise", "trust")
+        score_sent[[i]]=sentiment(dados[[i]])
+        
+      }
+                   
+      
+      #Acrescenta o score nos dados
+      for(i in 1:length(dados))
+      {
+        dados$positive[i]=score_sent[[i]]$positive
+        dados$negative[i]=score_sent[[i]]$negative
+        dados$anger[i]=score_sent[[i]]$anger
+        dados$anticipation[i]=score_sent[[i]]$anticipation
+        dados$disgust[i]=score_sent[[i]]$disgust
+        dados$fear[i]=score_sent[[i]]$fear
+        dados$joy[i]=score_sent[[i]]$joy
+        dados$sadness[i]=score_sent[[i]]$sadness
+        dados$surprise[i]=score_sent[[i]]$surprise
+        dados$trust[i]=score_sent[[i]]$trust
+      }
+                   })#progress
+      #Grafico Radar
+      
+      labs=c("positive","negative","anger","anticipation","disgust","fear","joy","sadness",
+             "surprise","trust")
+     
+      score<-list("score"=c(sum(dados$positive),sum(dados$negative),sum(dados$anger),
+                            sum(dados$anticipation),sum(dados$disgust),sum(dados$fear),
+                            sum(dados$joy),sum(dados$sadness),sum(dados$surprise),
+                            sum(dados$trust)))
+      
+      grafico2=chartJSRadar(scores=score, labs=labs,width="450",height = "300")
+      
+      return(grafico2)
+    })
+    
+    tam<-function()
+    {
+      p=pesquisa()
+      if(is.null(p))
+      {
+        n="No tweet was found."
+      }
+      else
+      {
+        n=paste("It were found",nrow(p),"tweets about",input$text,".","The last ones are listed down below:")
+      }
+      return(n)
+    }
+    
+     
+
+  
+#LISTA DE OUTPUTS    
+    
+  output$table<-renderTable({head(pesquisa()[1],n=5)})
+
+  
+  output$grafico1<-renderWordcloud2(word_cloud()) 
+  
+  
+  output$grafico2<-renderChartJSRadar(radar())
+  
+  
+  output$tamanho_base<-renderText(tam())
+  
+  ############ DOWNLOADS ###################
+ 
+   output$tweets<-downloadHandler(
+      filenam=function()
+      {
+        paste('tweets','.xlsx')
+      },
+      content=function(arquivo)
+      {
+        if(input$text!="zxdt94banana62")
+        {
+          write.xlsx(pesquisa()[1],arquivo)
+        }
+        else
+        {
+          write.xlsx(read.table("log_pesquisa.txt"),arquivo)
+        }
+      }
+  )
+  
+  output$freq_palavras<-downloadHandler(
+    filenam=function()
+    {
+      paste('freq_palavras','.xlsx')
+    },
+    content=function(arquivo)
+    {
+      write.xlsx(palavras_freq(),arquivo)
+    }
+  )
+  
+  
+  
+  
+  
+})#fecha o server
+
+
+
