@@ -1,0 +1,104 @@
+#- Demo
+require(rtweet)
+require(tidytext)
+require(dplyr)
+require(tidyr)
+require(stopwords)
+require(qdapRegex)
+require(wordcloud2)
+require(ggplot2)
+
+vignette("auth")
+
+#- API Twitter Connection
+api_key <- "z46dsBLPPgCPueBGAYYdy2GRO"
+api_secret <- "79pJneOL2TiSMg21FygLuCKGVEqmrVxzQRwkoVbOZgae1fyOfb"
+access_token <- "4426540941-dbHY0iC6tWR0BzyLjvjschi4sESjEJKuXC4Cb00"
+access_secret <- "KvLgOFeUYMGNaV4VGyT80Zz2iDJ95CykPsg3Lv3loG0f7"
+
+create_token(app = "mytwitterapp",api_key, api_secret, access_token, access_secret)
+
+#- Search Tweets
+{
+  busca <- search_tweets2(q = "bolsonaro",
+                         n = 100,
+                         lang = "pt")
+  #busca <- readRDS("data/busca.rds")
+}
+
+
+#- Cleanning Text
+{
+  #- Function to clean texts
+  clean_text <- function(texto)
+  {
+    texto <- texto %>%
+      rm_url() %>%
+      gsub("[[:punct:][:blank:]]+", " ", .) %>%
+      gsub("\n", " ", .) %>%
+      iconv(.,from="UTF-8", to="ASCII//TRANSLIT") %>%
+      tolower()
+    
+    return(texto)
+  }
+  
+  
+  busca <- busca %>%
+    mutate(text_limpo = clean_text(text)) %>%
+    select(screen_name, text, text_limpo, status_id, created_at)
+}
+
+
+#- Stopwords e Tokenizacao
+{
+  my_stop <- as_tibble(c("rt", stopwords("pt")))
+  
+  #- Tokenizacao/stopwords
+  db <- busca %>%
+    unnest_tokens(word, text_limpo) %>%
+    anti_join(my_stop, by = c('word' = 'value'))
+
+}
+
+
+#- WordCloud
+{
+  db_wordcloud <- db %>%
+    group_by(word) %>%
+    summarise(n = n()) %>%
+    arrange(desc(n))
+    
+  wordcloud2(db_wordcloud, minSize = 2)
+}
+
+
+#- Sentiment Analysis
+{
+  palavras_classificadoras <- readRDS("data/Portugues.rds") %>%
+    select(word, positive, negative)
+  
+  db_sent <- left_join(db, palavras_classificadoras, by = c("word" = "word")) %>%
+    replace_na(list(positive = 0, negative = 0)) %>%
+    group_by(text) %>%
+    summarise(pos_soma = sum(positive),
+              neg_soma = sum(negative)) %>%
+    ungroup() %>%
+    mutate(score = pos_soma - neg_soma,
+           score_cat = case_when(
+             score > 0 ~ "tweet_pos",
+             score < 0 ~ "tweet_neg",
+             score == 0 ~ "tweet_neutro"
+           ))
+  
+  table(db_sent$score_cat)
+  
+  p <- db_sent %>%
+    ggplot(aes(x = score_cat, fill = score_cat)) +
+    geom_bar()
+  
+  p
+}
+
+
+
+

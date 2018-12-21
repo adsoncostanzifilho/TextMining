@@ -1,0 +1,220 @@
+---
+title: "DataRisk - Projeto 20180930"
+author: "Adson Costanzi Filho"
+date: "10 de Outubro, 2018"
+output: 
+  html_document:
+    toc: true
+    toc_float: true
+    theme: "flatly"
+    highlight: "haddock"
+---
+
+## Data set *vitta*
+
+### **Cleaning Data set**
+
+Primeiramente foi feita uma limpeza na base de dados para garantir a unicidade das observações nas linhas, tratamento de NAs e padronização de nomes das variáveis.
+
+Para garantir a unicidade dos CPFs da base utilizou-se o CPF combinado com o maior id_venda,
+que indica a informação da última venda de um determinado CPF.
+
+
+* Padronização dos nomes das variáveis
+```{r, eval=FALSE}
+clean_db <- function(db){
+  
+  nomes <- names(db) %>%
+    tolower %>%
+    iconv(., to="ASCII//TRANSLIT") %>%
+    gsub(" ", "_", .) %>%
+    gsub("\\.", "_", .) %>%
+    gsub("-", "_", .) %>%
+    gsub("\\(", "", .) %>%
+    gsub("\\)", "", .)
+  
+  colnames(db) <- nomes
+
+  return(db)
+}
+```
+
+* Tratamento NA's
+```{r, eval=FALSE}
+
+vitta_1 <- vitta_1 %>%
+  filter(!is.na(cpf), !is.na(status))
+
+```
+
+* Unicidade das observações
+```{r, eval=FALSE}
+
+temp1 <- vitta_1 %>%
+  group_by(cpf) %>%
+  summarise(max_id_venda = max(id_venda))
+
+vitta_ok <- left_join(temp1, vitta_1, by = c("cpf" = "cpf", "max_id_venda" = "id_venda"))
+
+
+```
+
+Após a etapa de limpeza, a base de dados foi salva no formato .csv.
+
+* Salvando arquivo .csv
+```{r, eval=FALSE}
+
+write.table(vitta_ok, 
+            "data/vitta/vitta_pronto.csv",
+            na = "",
+            sep = ";",
+            dec = ".",
+            row.names = FALSE)
+
+```
+
+### **Variável Resposta**
+
+A variável resposta para o banco vitta já estava definida e está na coluna status.
+
+
+
+## Data set *brmalls*
+
+### **Cleaning Data set**
+
+Primeiramente foi feita uma limpeza na base de dados para garantir a unicidade das observações nas linhas, tratamento de variáves numéricas e padronização de nomes das variáveis.
+
+Após, a base de dados foi dividida em PF e PJ.
+
+
+* Padronização dos nomes das variáveis
+```{r, eval=FALSE}
+clean_db <- function(db){
+
+  nomes <- names(db) %>%
+    tolower %>%
+    iconv(., to="ASCII//TRANSLIT") %>%
+    gsub(" ", "_", .) %>%
+    gsub("\\.", "_", .) %>%
+    gsub("-", "_", .) %>%
+    gsub("\\(", "", .) %>%
+    gsub("\\)", "", .)
+  
+  colnames(db) <- nomes
+
+  return(db)
+}
+```
+
+* Tratamento de variáveis numéricas
+```{r, eval=FALSE}
+
+clean_numeric_variable <- function(db, num_col)
+{
+  
+  db_novo <- db[,num_col]
+  
+  for(i in 1:length(num_col))
+  {
+    db_novo[,i] <- as.numeric(gsub(",","\\.",gsub("\\.", "", db_novo[,i])))
+  }
+  
+  db <- db[,-num_col]
+  
+  db <- bind_cols(db, db_novo)
+  
+  return(db)
+}
+
+```
+
+* Divisão PF e PJ
+```{r, eval=FALSE}
+
+brmalls_1 <- brmalls_1 %>%
+  mutate(
+    tipo_pessoa = case_when(
+      str_count(num_cpf_cnpj) == 17 ~ "PJ",
+      str_count(num_cpf_cnpj) == 12 ~ "PF"
+    )
+  )
+
+brmalls_PF <- brmalls_1 %>%
+  filter(tipo_pessoa == "PF")
+
+brmalls_PJ <- brmalls_1 %>%
+  filter(tipo_pessoa == "PJ")
+
+```
+
+
+
+
+### **Variável Resposta**
+
+Para a definição da variável resposta foi definido o conceito de inadimplencia (tanto para PF quanto para PJ). Uma observação foi considerada inandimplente quando estava com débito em pelo menos uma conta.
+
+```{r, eval=FALSE}
+
+brmalls_PF_ok <- brmalls_PF %>% 
+  group_by(num_cpf_cnpj) %>%
+  summarise(soma_inadimplencia = sum(inadimplencia_total)) %>%
+  ungroup() %>%
+  mutate(resp = ifelse(soma_inadimplencia > 0, 1, 0)) %>%
+  select(num_cpf_cnpj, resp) %>%
+  mutate(num_cpf_cnpj = gsub("-", "", num_cpf_cnpj))
+
+
+
+brmalls_PJ_ok <- brmalls_PJ %>% 
+  group_by(num_cpf_cnpj) %>%
+  summarise(soma_inadimplencia = sum(inadimplencia_total)) %>%
+  ungroup() %>%
+  mutate(resp = ifelse(soma_inadimplencia > 0, 1, 0)) %>%
+  select(num_cpf_cnpj, resp) %>%
+  mutate(num_cpf_cnpj = gsub("-","",gsub("/", "", num_cpf_cnpj)))
+
+
+
+```
+
+
+### **Variáveis Adicionais**
+
+Foram coletadas informações adicionais oriundas das tabelas suporte, tanto para PF quanto para PJ.
+
+
+* Variáveis Adicionais
+```{r, eval=FALSE}
+
+brmalls_PJ_completo <- left_join(brmalls_PJ_ok, brmalls_3, by = c("num_cpf_cnpj" = "CNPJ")) %>%
+  filter(!is.na(razao_social))
+
+
+brmalls_PF_completo <- left_join(brmalls_PF_ok, brmalls_2, by = c("num_cpf_cnpj" = "CPF")) %>%
+  filter(!is.na(nome_pessoa))
+
+```
+
+Após estas etapas ambas as bases (PF e PJ) foram salvas em arquivos .csv.
+
+* Salvando arquivo .csv
+```{r, eval=FALSE}
+write.table(brmalls_PJ_completo, 
+            "data/brmalls/brmalls_PJ_pronto.csv",
+            na = "",
+            sep = ";",
+            dec = ".",
+            row.names = FALSE)
+
+write.table(brmalls_PF_completo, 
+            "data/brmalls/brmalls_PF_pronto.csv",
+            na = "",
+            sep = ";",
+            dec = ".",
+            row.names = FALSE)
+
+```
+
+

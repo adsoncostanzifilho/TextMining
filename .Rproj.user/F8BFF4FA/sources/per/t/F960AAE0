@@ -1,0 +1,22 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1545353050120.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "628833657",
+    "id" : "F960AAE0",
+    "lastKnownWriteTime" : 1539220652,
+    "last_content_update" : 1539220652,
+    "path" : "~/DataRisk/Projeto_20180930/script/report.Rmd",
+    "project_path" : null,
+    "properties" : {
+        "cursorPosition" : "1,0",
+        "scrollLine" : "0"
+    },
+    "relative_order" : 4,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}

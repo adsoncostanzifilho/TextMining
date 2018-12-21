@@ -17,10 +17,10 @@ require(radarchart)
 require(shinycssloaders)
 
 #- API Twitter Conection
-api_key <- "z46dsBLPPgCPueBGAYYdy2GRO"
-api_secret <- "79pJneOL2TiSMg21FygLuCKGVEqmrVxzQRwkoVbOZgae1fyOfb"
-access_token <- "4426540941-dbHY0iC6tWR0BzyLjvjschi4sESjEJKuXC4Cb00"
-access_secret <- "KvLgOFeUYMGNaV4VGyT80Zz2iDJ95CykPsg3Lv3loG0f7"
+api_key <- "xxx"
+api_secret <- "xxx"
+access_token <- "xxx"
+access_secret <- "xxx"
 setup_twitter_oauth(api_key, api_secret, access_token, access_secret)
 
 #create_token(app = "mytwitterapp",api_key, api_secret, access_token, access_secret)
