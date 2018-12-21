@@ -2,10 +2,7 @@
 title: "Text Mining Tool"
 author: "Adson Costanzi Filho"
 date: "December 20th, 2018"
-output: 
-  html_document:
-    theme: "flatly"
-    highlight: "haddock"
+output: md_document
 ---
 
 ```{r setup, include=FALSE}
