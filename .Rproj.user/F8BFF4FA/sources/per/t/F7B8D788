@@ -1,0 +1,22 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1551993268796.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "32|24|61|2|\n80|26|129|2|\n133|21|221|2|\n225|23|246|2|\n",
+    "hash" : "586706410",
+    "id" : "F7B8D788",
+    "lastKnownWriteTime" : 1551994436,
+    "last_content_update" : 1551994436454,
+    "path" : "~/shiny/TextMining/App/server.R",
+    "project_path" : "App/server.R",
+    "properties" : {
+        "cursorPosition" : "65,29",
+        "scrollLine" : "0"
+    },
+    "relative_order" : 2,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

@@ -5,17 +5,17 @@
     "dirty" : false,
     "encoding" : "UTF-8",
     "folds" : "",
-    "hash" : "2011602077",
+    "hash" : "2964342923",
     "id" : "D7CE66F5",
-    "lastKnownWriteTime" : 1545252337,
-    "last_content_update" : 1545252337,
+    "lastKnownWriteTime" : 1551994446,
+    "last_content_update" : 1551994446494,
     "path" : "~/useRS/ex/script/demo.R",
     "project_path" : null,
     "properties" : {
-        "cursorPosition" : "10,0",
-        "scrollLine" : "1"
+        "cursorPosition" : "28,28",
+        "scrollLine" : "0"
     },
-    "relative_order" : 3,
+    "relative_order" : 1,
     "source_on_save" : false,
     "source_window" : "",
     "type" : "r_source"

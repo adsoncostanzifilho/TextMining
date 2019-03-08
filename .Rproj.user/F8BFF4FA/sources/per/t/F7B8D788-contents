@@ -6,26 +6,22 @@ server <- function(input, output)
   
   #- PESQUISA
   pesquisa <- reactive({
-    
-    db <- search_tweets2(
+    db <<- search_tweets2(
       q = input$text, 
       lang = input$lang, 
       n = input$n)
-    
-    db <- db %>%
-      mutate(text_limpo = clean_text(text))
     
     dt_informacoes_novas <- data.frame(termo = input$text,
                                  idioma = input$lang,
                                  num = input$n)
     
-    dt_informacoes_velhas <- read.csv("log_pesquisa.csv", 
+    dt_informacoes_velhas <- read.csv("App/log_pesquisa.csv", 
                                sep = ";")
     
-    dt_informacoes <- bind_rows(dt_informacoes_novas, dt_informacoes_velhas)
+    dt_informacoes <- bind_rows(dt_informacoes_novas,dt_informacoes_velhas)
     
     write.table(dt_informacoes,
-                file = "log_pesquisa.csv",
+                file = "App/log_pesquisa.csv",
                 sep=";",
                 row.names = FALSE)
     
@@ -45,20 +41,20 @@ server <- function(input, output)
                         h4(texto,
                            style = "color:#00A7D0",
                            align = "center")
-                        ) 
+                        )
 
     }
 
     if(!is_empty(p))
     {
-      texto <- paste0("It was found ",nrow(p)," distinct tweets about ",input$text,".")
+      texto <- paste0("It was found ",nrow(p)," tweets about ",input$text,".")
       retorno_ui <- box(width = 12,
                         h4(texto, 
                            style = "color:#00A7D0",
                            align = "center"),
                         tags$hr(),
                         downloadButton("tweets", "Download Tweets")
-                        ) 
+                        )
     }
     
     return(retorno_ui)
@@ -153,8 +149,7 @@ server <- function(input, output)
       palavras <- palavras_en 
     }
     
-    if(input$pal_positive != "")
-    {
+    
       palavras <- palavras %>%
         add_row(word = unlist(strsplit(input$pal_positive, "\\,\\s|\\,|\\s|\\s\\,|\\s\\,\\s")),
                 positive = 1,
@@ -167,10 +162,8 @@ server <- function(input, output)
                 sadness = 0,
                 surprise = 0,
                 trust = 0)
-    }
-    
-    if(input$pal_negative != "")
-    {
+
+
       palavras <- palavras %>%
         add_row(word = unlist(strsplit(input$pal_negative, "\\,\\s|\\,|\\s|\\s\\,|\\s\\,\\s")),
                 positive = 0,
@@ -183,64 +176,21 @@ server <- function(input, output)
                 sadness = 0,
                 surprise = 0,
                 trust = 0)
-    }
-
-
-
-
     
+    d2 <- left_join(d, palavras, by = c("word" = "word")) %>%
+      replace_na(
+        list(positive = 0,
+             negative = 0,
+             anger = 0,
+             anticipation = 0,
+             disgust = 0,
+             fear = 0,
+             joy = 0,
+             sadness = 0,
+             surprise = 0,
+             trust = 0))
     
-    # Ponderado pelo n 
-    if(input$ponderar == TRUE)
-    {
-      d2 <- left_join(d, palavras, by = c("word" = "word")) %>%
-        replace_na(
-          list(
-            positive = 0,
-            negative = 0,
-            anger = 0,
-            anticipation = 0,
-            disgust = 0,
-            fear = 0,
-            joy = 0,
-            sadness = 0,
-            surprise = 0,
-            trust = 0)) %>%
-        mutate(
-          positive = positive * n,
-          negative = negative *n,
-          anger = anger * n,
-          anticipation = anticipation * n,
-          disgust = disgust * n,
-          fear = fear * n,
-          joy = joy * n,
-          sadness = sadness * n,
-          surprise = surprise * n,
-          trust = trust * n
-        )
-    }
-    
-    
-    # Nao ponderado por n
-    if(input$ponderar == FALSE)
-    {
-      d2 <- left_join(d, palavras, by = c("word" = "word")) %>%
-        replace_na(
-          list(
-            positive = 0,
-            negative = 0,
-            anger = 0,
-            anticipation = 0,
-            disgust = 0,
-            fear = 0,
-            joy = 0,
-            sadness = 0,
-            surprise = 0,
-            trust = 0))
-    }
-    
-    
-    # Grafico Radar
+    #Grafico Radar
     labs <- c("positive",
               "negative",
               "anger",
@@ -273,64 +223,27 @@ server <- function(input, output)
   
   
   #- PREVIEW
-  preview1 <- reactive({
+  preview <- reactive({
     db <- pesquisa()
+    idioma <- input$lang
     
-    box1 <- widgetUserBox(
-      title =  db$name[1],
-      subtitle = db$description[1],
-      socialButton(
-        url = db$status_url[1],
-        type = "twitter"
-      ),
-      type = 2,
-      src = db$profile_image_url[1],
-      background = TRUE,
-      backgroundUrl = db$profile_background_url[1],
-      footer = db$text[1]
-    )
-
-    return(box1)
-  })
-  
-  preview2 <- reactive({
-    db <- pesquisa()
+    temp <- db$id[1]
+    texto_ui <- paste0('<blockquote class="twitter-tweet" data-lang=',
+                       idioma,
+                       '><p lang=',
+                       idioma,
+                       ' dir="ltr"><a href="https://twitter.com/FGQISIyMPWzuwQ2/status/',
+                       temp,
+                       '?ref_src=twsrc%5Etfw"></a></blockquote>')
     
-    box1 <- widgetUserBox(
-      title =  db$name[2],
-      subtitle = db$description[2],
-      socialButton(
-        url = db$status_url[2],
-        type = "twitter"
+    final <- box(
+      tags$head(
+        tags$script("!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document,'script','twitter-wjs');")
       ),
-      type = 2,
-      src = db$profile_image_url[2],
-      background = TRUE,
-      backgroundUrl = db$profile_background_url[2],
-      footer = db$text[2]
+      HTML(texto_ui)
     )
     
-    return(box1)
-  })
-  
-  preview3 <- reactive({
-    db <- pesquisa()
-    
-    box1 <- widgetUserBox(
-      title =  db$name[3],
-      subtitle = db$description[3],
-      socialButton(
-        url = db$status_url[3],
-        type = "twitter"
-      ),
-      type = 2,
-      src = db$profile_image_url[3],
-      background = TRUE,
-      backgroundUrl = db$profile_background_url[3],
-      footer = db$text[3]
-    )
-    
-    return(box1)
+    return(texto_ui)
   })
   
   
@@ -346,11 +259,9 @@ server <- function(input, output)
   
   output$grafico2 <- renderChartJSRadar(radar())
   
-  output$preview1 <- renderUI(preview1())
+  output$preview1 <- renderText(preview())
   
-  output$preview2 <- renderUI(preview2())
   
-  output$preview3 <- renderUI(preview3())
   
   
   #- DOWNLOADS

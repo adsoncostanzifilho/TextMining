@@ -10,6 +10,11 @@ require(ggplot2)
 
 vignette("auth")
 
+input <- list()
+input$text="lula"
+input$lang="pt" 
+input$n=50
+
 #- API Twitter Connection
 api_key <- "z46dsBLPPgCPueBGAYYdy2GRO"
 api_secret <- "79pJneOL2TiSMg21FygLuCKGVEqmrVxzQRwkoVbOZgae1fyOfb"

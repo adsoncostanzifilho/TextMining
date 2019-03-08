@@ -12,8 +12,8 @@ ui <- dashboardPagePlus(
   skin = "blue-light",
   
   #- Dashboard Title
-  dashboardHeader(title = span(tagList(icon("twitter"), "Text Mining Tool"))),
-
+  dashboardHeader(title = "Text Mining Tool", icon = icon("home")),
+  
   
   #- Left Menu
   dashboardSidebar(
@@ -158,7 +158,7 @@ ui <- dashboardPagePlus(
               
               tags$hr(),
               
-              uiOutput("tamanho_base") 
+              uiOutput("tamanho_base")
               
              
             
@@ -167,12 +167,25 @@ ui <- dashboardPagePlus(
  
           ),
           
+
           
-          uiOutput("preview1"),
           
-          uiOutput("preview2"),
+          tags$head(
+            tags$script("!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document,'script','twitter-wjs');")
+          ),
           
-          uiOutput("preview3")
+          box(
+            HTML(paste0('<blockquote class="twitter-tweet" data-lang="en"><p lang="en" dir="ltr">
+                        <a href="https://twitter.com/FGQISIyMPWzuwQ2/status/',1074721194270691333,'?ref_src=twsrc%5Etfw"></a>
+                        </blockquote>')),
+            
+            HTML(paste0('<blockquote class="twitter-tweet" data-lang="en"><p lang="en" dir="ltr">
+                        <a href="https://twitter.com/FGQISIyMPWzuwQ2/status/',1074484740630200320,'?ref_src=twsrc%5Etfw"></a>
+                        </blockquote>'))
+            
+            
+          )
+          
       
           )
         
@@ -207,18 +220,17 @@ ui <- dashboardPagePlus(
               label_on = "Divide Positive/Negative",
               label_off = "Do not Divide Positive/Negative",
               icon_on = icon("check"),
-              icon_off = icon("remove"),
-              animation = "smooth"
+              icon_off = icon("remove")
             ),
             
-              prettyCheckboxGroup(
-                inputId = "show_words",
-                selected = c("green", "red", "blue"),
-                label = "Show Words",
-                thick = TRUE,
-                choices = c("Positive"="green", "Negative"="red", "Neutral"="blue"),
-                animation = "pulse",
-                status = "info"
+            prettyCheckboxGroup(
+              inputId = "show_words",
+              selected = c("Positive", "Negative", "Neutral"),
+              label = "Show Words",
+              thick = TRUE,
+              choices = c("Positive"="green", "Negative"="red", "Neutral"="blue"),
+              animation = "pulse",
+              status = "info"
             ),
             
             submitButton(text = " Refresh ", icon = icon("sync-alt")),
@@ -247,21 +259,13 @@ ui <- dashboardPagePlus(
             width = 4,
             textInput(inputId = "pal_positive",
                       label = "Add Positive Words",
-                      #value = " ",
+                      value = " ",
                       placeholder = "ex: one, two"),
             
             textInput(inputId = "pal_negative",
                       label = "Add Negative Words",
-                      #value = " ",
+                      value = " ",
                       placeholder = "ex: one, two"),
-            
-            prettyToggle(
-              inputId = "ponderar",
-              label_on = "Weighting by n",
-              label_off = "No Weighting by n",
-              icon_on = icon("check"),
-              icon_off = icon("remove")
-            ),
             
             submitButton(text = " Refresh ", icon = icon("sync-alt"))
 
