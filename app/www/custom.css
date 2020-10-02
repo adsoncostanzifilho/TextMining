@@ -1,0 +1,28 @@
+@import url("//fonts.googleapis.com/css?family=Lobster|Cabin:400,700");
+
+@font-face {
+  font-family:"PicoBlack";
+  src: url("pico-black.ttf") format("truetype");
+}
+
+@font-face {
+  font-family:"AristaLight";
+  src: url("arista-light.ttf") format("truetype");
+}
+
+
+.main-header .logo {
+  font-family:'PicoBlack';
+  font-weight: bold;
+  font-size: 24px;
+}
+
+
+/*css loaders*/
+.shiny-spinner-output-container {
+    position: relative;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    height: 25px;
+}
+

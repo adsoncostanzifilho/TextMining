@@ -72,11 +72,14 @@ ui <- dashboardPagePlus(
       menuItem("Home", tabName = "home", icon = icon("home")),
       menuItem("Search", tabName = "search", icon = icon("search")),
       menuItem("Word Cloud", tabName = "cloud", icon = icon("cloud")),
-      menuItem("Sentimental Analysis", tabName = "sentimental", icon = icon("eye"))
+      menuItem("Sentiment Analysis", tabName = "sentiment", icon = icon("eye"))
     )
   ),
   
   dashboardBody(
+    
+    # css style
+    tags$head(tags$link(rel = "stylesheet", type = "text/css", href = "custom.css")),
     
     #- Remove error mensages
     tags$style(
@@ -285,7 +288,7 @@ ui <- dashboardPagePlus(
       
       #- Third TAB
       tabItem(
-        tabName = "sentimental",
+        tabName = "sentiment",
         
         fluidRow(
           box(
@@ -315,8 +318,7 @@ ui <- dashboardPagePlus(
           
           box(
             width = 8,
-            withSpinner(chartJSRadarOutput("grafico2"), 
-                        type = getOption("spinner.type", default = 1))
+            chartJSRadarOutput("grafico2")
           )
           
         )

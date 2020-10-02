@@ -69,8 +69,12 @@ server <- function(input, output)
   #-  FREQUENCIA PALAVRAS
   palavras_freq <- reactive({
     db <- pesquisa()
-    my_stop <- as_tibble(c(unlist(strsplit(input$stop, "\\,\\s|\\,|\\s|\\s\\,|\\s\\,\\s")), 
-                            stopwords(input$lang)))
+    my_stop <- as_tibble(
+      c(
+        unlist(strsplit(input$stop, "\\,\\s|\\,|\\s|\\s\\,|\\s\\,\\s")), 
+        c(stopwords(input$lang), tolower(input$text))
+      )
+    )
     
     palavras <- db %>%
       unnest_tokens(word, text_limpo) %>%
