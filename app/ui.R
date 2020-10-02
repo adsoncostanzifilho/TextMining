@@ -1,4 +1,12 @@
-#--- UI ---#
+#- Packages
+
+# require(twitteR)
+require(rtweet)
+require(tidyr)
+require(tidytext)
+require(magrittr)
+require(purrr)
+require(qdapRegex)
 require(shiny)
 require(shinydashboard)
 require(shinydashboardPlus)
@@ -8,6 +16,48 @@ require(wordcloud2)
 require(radarchart)
 require(shinycssloaders)
 
+
+#- Set Twitter API parameters
+source('credentials/twitter_credentials.R')
+
+
+#- Create token to acess the twitter API
+mytoken <- create_token(
+  app = app_name,
+  api_key, 
+  api_secret, 
+  access_token, 
+  access_secret
+)
+
+
+#- Load functions
+source("functions/functions.R")
+
+
+#- Data for Sentimental Analysis
+palavras_pt <- readRDS("data/Portugues.rds") 
+palavras_es <- readRDS("data/Espanhol.rds")
+palavras_en <- readRDS("data/Ingles.rds")
+
+
+#- Search Log
+log_pesquisa <- readRDS('data/log_pesquisa.rds')
+
+
+#- Start Search log data
+db <- data.frame(
+  screenName = c(0,0,0,0),
+  text = c(0,0,0,0),
+  text_limpo = c(0,0,0,0),
+  id = c(0,0,0,0),
+  date = c(0,0,0,0),
+  latitude = c(0,0,0,0),
+  longitude = c(0,0,0,0)
+)
+
+
+#- MAIN UI 
 ui <- dashboardPagePlus(
   skin = "blue-light",
   
@@ -84,31 +134,31 @@ ui <- dashboardPagePlus(
               
               tags$hr(),
               
-              h3(log_pesquisa$termo[nrow(log_pesquisa)], 
+              h3(log_pesquisa$termo[1], 
                  style = "color:#00A7D0",
                  align = "center"),
               
               tags$hr(),
               
-              h3(log_pesquisa$termo[nrow(log_pesquisa)-1], 
+              h3(log_pesquisa$termo[2], 
                  style = "color:#00A7D0",
                  align = "center"),
               
               tags$hr(),
               
-              h3(log_pesquisa$termo[nrow(log_pesquisa)-2], 
+              h3(log_pesquisa$termo[3], 
                  style = "color:#00A7D0",
                  align = "center"),
               
               tags$hr(),
               
-              h3(log_pesquisa$termo[nrow(log_pesquisa)-3], 
+              h3(log_pesquisa$termo[4], 
                  style = "color:#00A7D0",
                  align = "center"),
               
               tags$hr(),
               
-              h3(log_pesquisa$termo[nrow(log_pesquisa)-4], 
+              h3(log_pesquisa$termo[5], 
                  style = "color:#00A7D0",
                  align = "center")
               )
@@ -176,13 +226,7 @@ ui <- dashboardPagePlus(
           uiOutput("preview3")
       
           )
-        
-        
-        
-        
-        
-        
-        
+
       ),
       
       #- Third TAB

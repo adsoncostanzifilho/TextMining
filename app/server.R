@@ -16,19 +16,18 @@ server <- function(input, output)
     db <- db %>%
       mutate(text_limpo = clean_text(text))
     
-    dt_informacoes_novas <- data.frame(termo = input$text,
-                                 idioma = input$lang,
-                                 num = input$n)
+    dt_informacoes_novas <- data.frame(
+      termo = input$text,
+      idioma = input$lang,
+      num = input$n)
     
-    dt_informacoes_velhas <- read.csv("log_pesquisa.csv", 
-                               sep = ";")
+    dt_informacoes_velhas <- readRDS("data/log_pesquisa.rds")
     
     dt_informacoes <- bind_rows(dt_informacoes_novas, dt_informacoes_velhas)
     
-    write.table(dt_informacoes,
-                file = "log_pesquisa.csv",
-                sep=";",
-                row.names = FALSE)
+    saveRDS(
+      dt_informacoes,
+      file = "data/log_pesquisa.rds")
     
     return(db)
   })

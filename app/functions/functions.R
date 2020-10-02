@@ -18,8 +18,5 @@ clean_text <- function(texto)
   return(texto)
 }
 
-#- Function to search terms on twitter
-
-
 
 
