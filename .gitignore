@@ -2,3 +2,4 @@
 .Rproj.user
 data_aut/
 twitter_credentials.R
+rsconnect/
