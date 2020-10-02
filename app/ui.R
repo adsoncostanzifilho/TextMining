@@ -58,7 +58,7 @@ db <<- data.frame(
 
 
 #- Loading UIs
-
+source('tabs/1_home/home_ui.R')
 source('tabs/2_search/search_ui.R')
 source('tabs/3_cloud/cloud_ui.R')
 source('tabs/4_sentiment/sentiment_ui.R')
