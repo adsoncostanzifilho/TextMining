@@ -1,1 +1,4 @@
 .httr-oauth
+.Rproj.user
+data_aut/
+twitter_credentials.R

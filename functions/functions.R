@@ -19,28 +19,6 @@ clean_text <- function(texto)
 }
 
 #- Function to search terms on twitter
-search_twitter <- function(termo, idioma, num)
-{
-
-  busca <- searchTwitteR(searchString = termo, lang = idioma, n = num)
-  
-  if(is_empty(busca))
-  {
-    db <- as_tibble()
-  }
-  
-  if(!is_empty(busca))
-  {
-    db <- do.call("rbind", lapply(busca, as.data.frame)) %>%
-      as_tibble() %>%
-      mutate(text_limpo = clean_text(text),
-             date = as.Date(created, fomat = "Y/%m/%d")) %>%
-      select(screenName, text, text_limpo, id, date, latitude, longitude)
-    
-    
-  }
-  return(db)
-}
 
 
 
