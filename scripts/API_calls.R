@@ -7,7 +7,7 @@ require(curl)
 require(dplyr)
 
 # set Twitter API parameters
-source('App/credentials/twitter_credentials.R')
+source('app/credentials/twitter_credentials.R')
 
 
 # create token to acess the twitter API
