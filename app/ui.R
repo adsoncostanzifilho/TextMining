@@ -13,9 +13,10 @@ require(shinydashboardPlus)
 require(shinyWidgets)
 require(stopwords)
 require(wordcloud2)
-require(radarchart)
+require(plotly)
 require(shinycssloaders)
-
+require(shinyhelper)
+require(echarts4r)
 
 #- Set Twitter API parameters
 source('credentials/twitter_credentials.R')
@@ -41,27 +42,12 @@ palavras_es <<- readRDS("data/Espanhol.rds")
 palavras_en <<- readRDS("data/Ingles.rds")
 
 
-#- Search Log
-log_pesquisa <<- readRDS('data/log_pesquisa.rds')
-
-
-#- Start Search log data
-db <<- data.frame(
-  screenName = c(0,0,0,0),
-  text = c(0,0,0,0),
-  text_limpo = c(0,0,0,0),
-  id = c(0,0,0,0),
-  date = c(0,0,0,0),
-  latitude = c(0,0,0,0),
-  longitude = c(0,0,0,0)
-)
-
-
 #- Loading UIs
 source('tabs/1_home/home_ui.R')
 source('tabs/2_search/search_ui.R')
 source('tabs/3_cloud/cloud_ui.R')
 source('tabs/4_sentiment/sentiment_ui.R')
+source('tabs/5_topic/topic_ui.R')
 
 
 #- MAIN UI START
@@ -78,7 +64,8 @@ ui <- dashboardPagePlus(
       menuItem("Home", tabName = "home", icon = icon("home")),
       menuItem("Search", tabName = "search", icon = icon("search")),
       menuItem("Word Cloud", tabName = "cloud", icon = icon("cloud")),
-      menuItem("Sentiment Analysis", tabName = "sentiment", icon = icon("eye"))
+      menuItem("Sentiment Analysis", tabName = "sentiment", icon = icon("smile")),
+      menuItem("Topic Modeling", tabName = "topic", icon = icon("comments"))
     )
   ),
   
@@ -121,7 +108,8 @@ ui <- dashboardPagePlus(
       home,
       search,
       cloud,
-      sentiment
+      sentiment,
+      topic
     )
   )
 )

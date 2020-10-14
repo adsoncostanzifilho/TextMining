@@ -1,4 +1,3 @@
-@import url("//fonts.googleapis.com/css?family=Lobster|Cabin:400,700");
 
 @font-face {
   font-family:"PicoBlack";
@@ -10,7 +9,25 @@
   src: url("arista-light.ttf") format("truetype");
 }
 
+@font-face {
+  font-family:"Montserrat";
+  src: url("Montserrat-Regular.ttf") format("truetype");
+}
 
+/* CHANGE FONT FAMILY ENTIRE PAGE*/
+body {
+  font-family: Montserrat;
+}
+
+/* hr color */
+hr {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    border: 0;
+    border-top: 3px solid #d2d6de;
+}
+
+/* TITLE */
 .main-header .logo {
   font-family:'PicoBlack';
   font-weight: bold;
@@ -18,11 +35,115 @@
 }
 
 
-/*css loaders*/
-.shiny-spinner-output-container {
-    position: relative;
-    padding-top: 0px;
-    padding-bottom: 0px;
-    height: 25px;
+/*Centralize boxes in search tab*/
+
+.col-sm-1, .col-sm-10, .col-sm-11, .col-sm-12, .col-sm-2, .col-sm-3, .col-sm-4, .col-sm-5, .col-sm-6, .col-sm-7, .col-sm-8, .col-sm-9 {
+    float: none;
+    margin: 0 auto;
+    text-align: center;
 }
+
+/* BOXES STYLE */
+.box {
+  text-align: center;
+}
+
+/* TEXT ALIGN */
+.h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
+    font-family: 'Montserrat','Source Sans Pro',sans-serif;
+    text-align: center;
+}
+
+/* h1 with twitter font */
+.h1_twitter{
+  font-family:'PicoBlack';
+  font-weight: bold;
+  text-align: center;
+}
+
+/*BUTTON WITH TWITTER FONT sityle*/
+.btn-default, .btn_twitter, .btn-default:focus, .btn_twitter:focus, .btn-default:active, .btn_twitter:active {
+    font-family: 'PicoBlack';
+    font-weight: bold;
+    color: white !important;
+    background-color: #3c8dbb !important;
+    border: 1px solid transparent;
+    font-size: 22px;
+}
+
+.btn_twitter:hover, .btn-default:hover{
+  font-family: 'PicoBlack';
+  font-weight: bold;
+  color: white !important;
+  background-color: #00a7d0 !important;
+  font-size: 22px
+}
+
+
+/* syle of the box with information about the API return */
+.search_return{
+  color: #3c8dbb;
+}
+
+/* preview tweets box doble*/
+.preview{
+  float:left;
+}
+
+/* CSS LOADER */
+.load-container {
+    position: absolute;
+    top: 0% !important;
+    -webkit-transform: translateY(-50%);
+    transform: translateY(-50%);
+    overflow: hidden;
+    width: 100%;
+}
+
+/* Twitter social button */
+.btn-twitter {
+    font-size: 12px;
+    color: #ffffff;
+    margin-left: 93%;
+    margin-top: 0px;
+    margin-bottom: -35px;
+    background-color: #55acee;
+}
+
+/* Twitter box profile image*/
+.widget-user-2 .widget-user-image > img {
+    width: 75px;
+    height: auto;
+    border: 3px solid #ffffff;
+}
+
+/* Legend in gauge chart*/
+
+/* basic positioning */
+.center {
+  margin: 0 auto;
+  width: 40%;
+  padding: 10px;
+  text-align: center !important;
+}
+
+.legend { 
+  list-style: none;
+}
+.legend li {
+  float: left; 
+  margin-right: 10px; 
+}
+.legend span { 
+  border: 1px solid #ccc;
+  float: left;
+  width: 12px;
+  height: 12px; 
+  margin: 2px; 
+}
+
+/* your colors */
+.legend .pos { background-color: #008450; }
+.legend .neu { background-color: #EFB700; }
+.legend .neg { background-color: #B81D13; }
 
