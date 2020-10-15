@@ -385,14 +385,14 @@ gauge_ui <- reactive({
   
   if(input$single_doble == "single")
   {
-    word_cloud_ui <- fluidRow(
+    gauge_ui <- fluidRow(
       box(
         width = 9,
         h1("Sentiment Score of", input$text),
         
         hr(),
         echarts4rOutput('gauge'),
-        br(),
+        
         HTML(
           '<div class="center">
             <ul class="legend">
@@ -409,7 +409,7 @@ gauge_ui <- reactive({
   
   else if(input$single_doble == "doble")
   {
-    word_cloud_ui <- fluidRow(
+    gauge_ui <- fluidRow(
       box(
         width = 9,
         
@@ -436,8 +436,6 @@ gauge_ui <- reactive({
           echarts4rOutput('gauge2')
         ),
         
-        br(),
-        
         HTML(
           '<div class="center">
             <ul class="legend">
@@ -455,7 +453,7 @@ gauge_ui <- reactive({
   }
   
   
-  return(word_cloud_ui)
+  return(gauge_ui)
  
 })
 

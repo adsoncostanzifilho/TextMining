@@ -17,6 +17,8 @@ require(plotly)
 require(shinycssloaders)
 require(shinyhelper)
 require(echarts4r)
+require(widyr)
+require(networkD3)
 
 #- Set Twitter API parameters
 source('credentials/twitter_credentials.R')

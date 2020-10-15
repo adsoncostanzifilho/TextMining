@@ -38,8 +38,8 @@ my_stop <- reactive({
 
 #- Word frequencies
 word_freq <- reactive({
-  db <<- main_search()
-  my_stopwords <<- my_stop()
+  db <- main_search()
+  my_stopwords <- my_stop()
   
   if(input$single_doble == "single")
   {
@@ -120,7 +120,7 @@ word_cloud <- reactive({
 
 # Doble word cloud
 word_cloud1 <- reactive({
-  db_complet <<- word_freq()
+  db_complet <- word_freq()
   db_sent <- sent_words()
   
  
