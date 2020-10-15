@@ -27,7 +27,7 @@ my_stop <- reactive({
   stop_db <- as_tibble(
     c(
       tolower(unlist(strsplit(input$stop, "\\,\\s|\\,|\\s|\\s\\,|\\s\\,\\s"))),
-      c(stopwords(input$lang), tolower(input$text), 's', 't')
+      c(stopwords(input$lang), tolower(input$text), 's', 't', 'rt')
     )
   )
   
@@ -46,7 +46,8 @@ word_freq <- reactive({
     db_word <- db %>%
       unnest_tokens(word, text_clean) %>%
       count(word, sort = TRUE) %>%
-      anti_join(my_stopwords, by = c('word' = 'value'))
+      anti_join(my_stopwords, by = c('word' = 'value')) %>%
+      filter(n >= 2)
     
     return(db_word)
   }
@@ -57,13 +58,15 @@ word_freq <- reactive({
       filter(search_term == input$text1) %>%
       unnest_tokens(word, text_clean) %>%
       count(word, sort = TRUE) %>%
-      anti_join(my_stopwords, by = c('word' = 'value'))
+      anti_join(my_stopwords, by = c('word' = 'value')) %>%
+      filter(n >= 2)
      
     db_word2 <- db %>%
       filter(search_term == input$text2) %>%
       unnest_tokens(word, text_clean) %>%
       count(word, sort = TRUE) %>%
-      anti_join(my_stopwords, by = c('word' = 'value')) 
+      anti_join(my_stopwords, by = c('word' = 'value')) %>%
+      filter(n >= 2)
   
     return(list(db_word1, db_word2))
   }
@@ -83,13 +86,29 @@ word_cloud <- reactive({
   # NO Split
   if(input$div_words == 'no_split')
   {
-    word_cloud_plot <- wordcloud2(db, minSize = 4)
+    cust_col <- rep(c('#f94144','#f3722c','#f8961e','#f9c74f', '#90be6d', '#43aa8b', '#577590'),nrow(db))
+    cust_col <- cust_col[1:nrow(db)]
+    
+    par(mar = rep(0, 4))
+    set.seed(1992)
+    word_cloud_plot <- wordcloud(
+      words = db$word, 
+      freq = db$n, 
+      min.freq = 1,
+      max.words = 500,
+      random.order = FALSE,
+      rot.per = 0.35,
+      colors = cust_col,
+      ordered.colors = TRUE,
+      family = "Montserrat"
+    )
+    
   }
   
   # Split
   else if(input$div_words == 'split')
   {
-    vet_split <<- input$show_words_split
+    vet_split <- input$show_words_split
     word_cloud_db <- left_join(db, db_sent, by = c("word" = "word")) %>%
       mutate(
         positive = as.numeric(if_else(is.na(positive), 0L, positive)),
@@ -106,10 +125,24 @@ word_cloud <- reactive({
         ),
       ) %>%
       select(word, n, check_color, color) %>%
-      filter(check_color %in% vet_split)
+      filter(
+        check_color %in% vet_split,
+        n >= 2
+      )
     
-    
-    word_cloud_plot <- wordcloud2(word_cloud_db, minSize = 4, color = word_cloud_db$color)
+    par(mar = rep(0, 4))
+    set.seed(1992)
+    word_cloud_plot <- wordcloud(
+      words = word_cloud_db$word, 
+      freq = word_cloud_db$n, 
+      min.freq = 1,
+      max.words = 500,
+      random.order = FALSE,
+      rot.per = 0.35,
+      colors = word_cloud_db$color,
+      ordered.colors = TRUE,
+      family = "Montserrat"
+    )
     
   }
   
@@ -117,6 +150,7 @@ word_cloud <- reactive({
   return(word_cloud_plot)
   
   })
+
 
 # Doble word cloud
 word_cloud1 <- reactive({
@@ -150,7 +184,23 @@ word_cloud1 <- reactive({
   # NO Split
   if(input$div_words == 'no_split')
   {
-    word_cloud_plot <- wordcloud2(db, minSize = 4)
+    cust_col <- rep(c('#f94144','#f3722c','#f8961e','#f9c74f', '#90be6d', '#43aa8b', '#577590'),nrow(db))
+    cust_col <- cust_col[1:nrow(db)]
+    
+    par(mar = rep(0, 4))
+    set.seed(1992)
+    word_cloud_plot <- wordcloud(
+      words = db$word, 
+      freq = db$n, 
+      min.freq = 1,
+      max.words = 500,
+      random.order = FALSE,
+      rot.per = 0.35,
+      colors = cust_col,
+      ordered.colors = TRUE,
+      family = "Montserrat"
+    )
+    
   }
   
   # Split
@@ -174,11 +224,23 @@ word_cloud1 <- reactive({
         ),
       ) %>%
       select(word, n, check_color, color) %>%
-      filter(check_color %in% vet_split) %>%
+      filter(
+        check_color %in% vet_split) %>%
       arrange(desc(n))
     
-    
-    word_cloud_plot <- wordcloud2(word_cloud_db, minSize = 4, color = word_cloud_db$color)
+    par(mar = rep(0, 4))
+    set.seed(1992)
+    word_cloud_plot <- wordcloud(
+      words = word_cloud_db$word, 
+      freq = word_cloud_db$n, 
+      min.freq = 1,
+      max.words = 500,
+      random.order = FALSE,
+      rot.per = 0.35,
+      colors = word_cloud_db$color,
+      ordered.colors = TRUE,
+      family = "Montserrat"
+    )
     
   }
   
@@ -186,6 +248,7 @@ word_cloud1 <- reactive({
   return(word_cloud_plot)
   
 })
+
 
 word_cloud2 <- reactive({
   db_complet <- word_freq()
@@ -218,7 +281,23 @@ word_cloud2 <- reactive({
   # NO Split
   if(input$div_words == 'no_split')
   {
-    word_cloud_plot <- wordcloud2(db, minSize = 4)
+    cust_col <- rep(c('#f94144','#f3722c','#f8961e','#f9c74f', '#90be6d', '#43aa8b', '#577590'),nrow(db))
+    cust_col <- cust_col[1:nrow(db)]
+    
+    par(mar = rep(0, 4))
+    set.seed(1992)
+    word_cloud_plot <- wordcloud(
+      words = db$word, 
+      freq = db$n, 
+      min.freq = 1,
+      max.words = 500,
+      random.order = FALSE,
+      rot.per = 0.35,
+      colors = cust_col,
+      ordered.colors = TRUE,
+      family = "Montserrat"
+    )
+    
   }
   
   # Split
@@ -241,14 +320,25 @@ word_cloud2 <- reactive({
         ),
       ) %>%
       select(word, n, check_color, color) %>%
-      filter(check_color %in% vet_split) %>%
+      filter(
+        check_color %in% vet_split) %>%
       arrange(desc(n))
     
-    
-    word_cloud_plot <- wordcloud2(word_cloud_db, minSize = 4, color = word_cloud_db$color)
+    par(mar = rep(0, 4))
+    set.seed(1992)
+    word_cloud_plot <- wordcloud(
+      words = word_cloud_db$word, 
+      freq = word_cloud_db$n, 
+      min.freq = 1,
+      max.words = 500,
+      random.order = FALSE,
+      rot.per = 0.35,
+      colors = word_cloud_db$color,
+      ordered.colors = TRUE,
+      family = "Montserrat"
+    )
     
   }
-  
   
   return(word_cloud_plot)
   
@@ -265,7 +355,7 @@ word_cloud_ui <- reactive({
         h1("Word Cloud of", input$text),
         
         hr(),
-        wordcloud2Output('word_cloud')
+        plotOutput('word_cloud')
       )
     )
   }
@@ -284,7 +374,7 @@ word_cloud_ui <- reactive({
           
           hr(),
           
-          wordcloud2Output('word_cloud1')
+          plotOutput('word_cloud1')
           
         ),
         
@@ -296,7 +386,7 @@ word_cloud_ui <- reactive({
           
           hr(),
           
-          wordcloud2Output('word_cloud2')
+          plotOutput('word_cloud2')
         )
         
       )
@@ -311,9 +401,9 @@ word_cloud_ui <- reactive({
 
 
 #- OUTPUTS   
-output$word_cloud <- renderWordcloud2(word_cloud())
-output$word_cloud1 <- renderWordcloud2(word_cloud1())
-output$word_cloud2 <- renderWordcloud2(word_cloud2())
+output$word_cloud <- renderPlot(word_cloud())
+output$word_cloud1 <- renderPlot(word_cloud1())
+output$word_cloud2 <- renderPlot(word_cloud2())
 
 output$word_cloud_ui <- renderUI(word_cloud_ui())
 

@@ -114,7 +114,7 @@ main_search <- eventReactive(input$search,{
 
 
 # INTERFACE - Return from Twitter API
-twitter_api_return <- reactive({
+twitter_api_return <- eventReactive(input$search,{
   db <- main_search()
   
   # EMPTY TEXT INPUTs
@@ -169,7 +169,7 @@ twitter_api_return <- reactive({
 
 
 # TWEET PREVIEWs
-preview_ui <- reactive({
+preview_ui <- eventReactive(input$search,{
   
   # preview for empty text inputs
   if(is.character(main_search()) | is_empty(main_search()))

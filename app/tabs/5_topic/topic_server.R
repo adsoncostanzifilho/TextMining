@@ -335,7 +335,7 @@ topic_ui <- reactive({
           width = 6,
           class = "preview",
           
-          h1("Main Topics and Connections of", input$text2),
+          h1("Main Topics of", input$text2),
           
           hr(),
           
