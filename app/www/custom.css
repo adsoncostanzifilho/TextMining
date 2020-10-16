@@ -35,7 +35,39 @@ hr {
 }
 
 
-/*Centralize boxes in search tab*/
+/* left align for HOME*/
+.left {
+  text-align: left;
+}
+
+/*QUestion mark in HOME*/
+.quest_icon_home {
+  color: #3c8dbb;
+}
+
+/* social icons HOME */
+.my_social {
+  color: white;
+  font-size: 20px;
+  padding-right: 2px;
+  padding-left: 2px;
+}
+
+/* FOOTER HOME*/
+.my_footer {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  background-color: #3c8dbb;
+  color: white;
+  text-align: right;
+  padding-right: 4%;
+  padding-top: 0.5%;
+  padding-bottom: 0.5%;
+}
+
+/*Centralize boxes in search tab */
 
 .col-sm-1, .col-sm-10, .col-sm-11, .col-sm-12, .col-sm-2, .col-sm-3, .col-sm-4, .col-sm-5, .col-sm-6, .col-sm-7, .col-sm-8, .col-sm-9 {
     float: none;
@@ -43,10 +75,7 @@ hr {
     text-align: center;
 }
 
-/* BOXES STYLE */
-.box {
-  text-align: center;
-}
+
 
 /* TEXT ALIGN */
 .h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
@@ -117,6 +146,16 @@ hr {
     border: 3px solid #ffffff;
 }
 
+/* labels of inputs */
+label {
+    display: inline-block;
+    max-width: 100%;
+    /* margin-bottom: 5px; */
+    font-weight: 700;
+    margin: 6px;
+}
+
+
 /* Legend in gauge chart*/
 
 /* basic positioning */
@@ -145,4 +184,5 @@ hr {
 .legend .pos { background-color: #008450; }
 .legend .neu { background-color: #EFB700; }
 .legend .neg { background-color: #B81D13; }
+
 

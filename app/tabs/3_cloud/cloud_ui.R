@@ -5,7 +5,7 @@ cloud <- tabItem(
   
   fluidPage(
     
-    h1("Welcome to the Word Cloud Page!", class = 'h1_twitter'),
+    h1("Welcome to the Word Cloud Page!"),
     h4("Here you will be able to visualize different kinds of word clouds 
        and have a better understanding of the topics related to your search."),
     

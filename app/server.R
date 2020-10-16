@@ -1,6 +1,7 @@
 #--- SERVER ---#
 server <- function(input, output, session) 
 {
+  
   # Search Server
   source('tabs/2_search/search_server.R', local = TRUE)  
   

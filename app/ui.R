@@ -20,6 +20,7 @@ require(shinyhelper)
 require(echarts4r)
 require(widyr)
 require(networkD3)
+require(shinyjs)
 
 #- Set Twitter API parameters
 source('credentials/twitter_credentials.R')
@@ -51,6 +52,7 @@ source('tabs/2_search/search_ui.R')
 source('tabs/3_cloud/cloud_ui.R')
 source('tabs/4_sentiment/sentiment_ui.R')
 source('tabs/5_topic/topic_ui.R')
+
 
 
 #- MAIN UI START

@@ -5,7 +5,7 @@ search <- tabItem(
   
   fluidPage(
     
-    h1("Welcome to the Search Page!", class = 'h1_twitter'),
+    h1("Welcome to the Search Page!"),
     h4("Here you will collect the data to be used in the entire interface."),
     
     hr(),
@@ -58,7 +58,7 @@ search <- tabItem(
         label = "Number of tweets to search:",
         min = 50,
         max =  500,
-        value =  200,
+        value =  100,
         step = 10)
     ),
     

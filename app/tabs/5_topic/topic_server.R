@@ -296,6 +296,7 @@ topic_graphic2 <- reactive({
 })
 
 
+
 # TOPIC UI
 topic_ui <- reactive({
   if(input$single_doble == "single")

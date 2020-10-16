@@ -5,7 +5,7 @@ sentiment <- tabItem(
   
   fluidPage(
     
-    h1("Welcome to the Sentiment Analysis Page!", class = 'h1_twitter'),
+    h1("Welcome to the Sentiment Analysis Page!"),
     h4("Here you will be able to visualize the sentiments related to your search."),
     
     hr(),

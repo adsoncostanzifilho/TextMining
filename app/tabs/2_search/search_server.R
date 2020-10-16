@@ -3,8 +3,6 @@
 #- Help buttons
 observe_helpers(withMathJax = TRUE)
 
-#- PESQUISA
-
 
 # SEARCH ON TWITTER
 main_search <- eventReactive(input$search,{
@@ -117,6 +115,7 @@ main_search <- eventReactive(input$search,{
 twitter_api_return <- eventReactive(input$search,{
   db <- main_search()
   
+
   # EMPTY TEXT INPUTs
   if(is.character(db))
   {
@@ -132,6 +131,7 @@ twitter_api_return <- eventReactive(input$search,{
   # NO EMPTY AND SINGLE
   else if(!is_empty(db) & input$single_doble == "single")
   {
+    
     text <-  h4(
       p(paste0("It was found ", nrow(db)," tweets about ", input$text,".")),
       p("Now you are able to use the entire page! Take a look at the menu on the left."),
@@ -142,6 +142,7 @@ twitter_api_return <- eventReactive(input$search,{
   # NO EMPTY AND DOBLE
   else if(!is_empty(db) & input$single_doble == "doble")
   {
+    
     text <- h4(
       p(paste0(
         "It was found ", 
@@ -266,7 +267,7 @@ preview_ui <- eventReactive(input$search,{
     
     preview_ui <- fluidRow(
       box(
-        width = 11,
+        width = 12,
         
         column(
           width = 6,
@@ -277,7 +278,7 @@ preview_ui <- eventReactive(input$search,{
           hr(),
           
           widgetUserBox(
-            width = 12,
+            width = 11,
             title = db1$name[1], 
             subtitle = HTML(
               paste0(
@@ -296,7 +297,7 @@ preview_ui <- eventReactive(input$search,{
           ),
           
           widgetUserBox(
-            width = 12,
+            width = 11,
             title = db1$name[2],  
             subtitle = HTML(
               paste0(
@@ -315,7 +316,7 @@ preview_ui <- eventReactive(input$search,{
           ),
           
           widgetUserBox(
-            width = 12,
+            width = 11,
             title = db1$name[3],
             subtitle = HTML(
               paste0(
@@ -344,7 +345,7 @@ preview_ui <- eventReactive(input$search,{
           hr(),
           
           widgetUserBox(
-            width = 12,
+            width = 11,
             title = db2$name[1],
             subtitle = HTML(
               paste0(
@@ -363,7 +364,7 @@ preview_ui <- eventReactive(input$search,{
           ),
           
           widgetUserBox(
-            width = 12,
+            width = 11,
             title = db2$name[2],
             subtitle = HTML(
               paste0(
@@ -382,7 +383,7 @@ preview_ui <- eventReactive(input$search,{
           ),
           
           widgetUserBox(
-            width = 12,
+            width = 11,
             title = db2$name[3],  
             subtitle = HTML(
               paste0(
