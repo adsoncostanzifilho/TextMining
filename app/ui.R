@@ -60,6 +60,8 @@ ui <- dashboardPagePlus(
   title = "Text Mining Tool",
   skin = "blue-light",
   
+
+  
   #- Dashboard Title
   dashboardHeader(title = span(tagList(icon("twitter"), "Text Mining Tool"))),
   
@@ -76,6 +78,9 @@ ui <- dashboardPagePlus(
   
   #- Dashboard Body
   dashboardBody(
+    
+    # Google Analytics
+    #tags$head(includeScript("www/googleanalytics.js")),
     
     tags$head(
       # css style

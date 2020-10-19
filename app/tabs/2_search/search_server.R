@@ -256,7 +256,7 @@ preview_ui <- eventReactive(input$search,{
   else if(input$single_doble == "doble")
   {
     db <- main_search() 
-    db2<<-db
+    db2<-db
     db1 <- db %>% 
       filter(search_term == input$text1) %>%
       arrange(desc(created_at))

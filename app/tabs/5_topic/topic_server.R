@@ -19,8 +19,9 @@ topic_graphic <- reactive({
     arrange(search_term, desc(tf_idf)) %>%
     filter(stringr::str_length(word)>4) %>%
     group_by(search_term) %>%
-    mutate(order_aux = row_number()) %>%
     ungroup() %>%
+    arrange(desc(tf), desc(n)) %>%
+    mutate(order_aux = row_number()) %>%
     filter(order_aux <= 5)
   
   if(input$connections == 'by_corr')
@@ -118,8 +119,9 @@ topic_graphic1 <- reactive({
     arrange(search_term, desc(tf_idf)) %>%
     filter(stringr::str_length(word)>4) %>%
     group_by(search_term) %>%
-    mutate(order_aux = row_number()) %>%
     ungroup() %>%
+    arrange(desc(tf), desc(n)) %>%
+    mutate(order_aux = row_number()) %>%
     filter(order_aux <= 5)
   
   if(input$connections == 'by_corr')
@@ -217,8 +219,9 @@ topic_graphic2 <- reactive({
     arrange(search_term, desc(tf_idf)) %>%
     filter(stringr::str_length(word)>4) %>%
     group_by(search_term) %>%
-    mutate(order_aux = row_number()) %>%
     ungroup() %>%
+    arrange(desc(tf), desc(n)) %>%
+    mutate(order_aux = row_number()) %>%
     filter(order_aux <= 5)
   
   if(input$connections == 'by_corr')
