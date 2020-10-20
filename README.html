@@ -372,10 +372,10 @@ summary {
 <h2>Instructions</h2>
 <p>This interface was all developed in R using mainly the shiny and rtweet packages. The tool is online on shinyapps’ repository at the adress <a href="https://adsoncostanzi.shinyapps.io/TextMining/" class="uri">https://adsoncostanzi.shinyapps.io/TextMining/</a>.</p>
 <p>PS: To run this app localy it is necessary to have Twitter autorization (access_token, access_secret, api_key, api_secret). If you do not have this autorization yet use the comand <code>rtweet::vignette(&quot;auth&quot;)</code> and follow the instructions.</p>
-<p>Once you have the Twitter API autorization you must create an R file called <code>twitter_credentias.R</code> inside the <code>app/credentials</code> folder. The file must have 5 objects: api_key, api_secret, access_token, access_secret, and app_name.</p>
+<p>Once you have the Twitter API autorization you must create an R file called <code>twitter_credentials.R</code> inside the <code>app/credentials</code> folder. The file must have 5 objects: api_key, api_secret, access_token, access_secret, and app_name.</p>
 <div id="credential-file-example" class="section level3">
 <h3>Credential File Example</h3>
-<p>The <code>twitter_credentias.R</code> file should follow the template below:</p>
+<p>The <code>twitter_credentials.R</code> file should follow the template below:</p>
 <pre><code># set Twitter API parameters
 
 api_key &lt;- &quot;XXX&quot;

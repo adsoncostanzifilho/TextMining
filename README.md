@@ -16,13 +16,13 @@ have this autorization yet use the comand `rtweet::vignette("auth")` and
 follow the instructions.
 
 Once you have the Twitter API autorization you must create an R file
-called `twitter_credentias.R` inside the `app/credentials` folder. The
+called `twitter_credentials.R` inside the `app/credentials` folder. The
 file must have 5 objects: api\_key, api\_secret, access\_token,
 access\_secret, and app\_name.
 
 ### Credential File Example
 
-The `twitter_credentias.R` file should follow the template below:
+The `twitter_credentials.R` file should follow the template below:
 
     # set Twitter API parameters
 
