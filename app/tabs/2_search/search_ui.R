@@ -17,7 +17,7 @@ search <- tabItem(
         selected = "single",
         label = "What kind of search do you want?",
         thick = TRUE,
-        choices = c("Single Search"="single", "Doble Search"="doble"),
+        choices = c("Single Search"="single", "Double Search"="doble"),
         animation = "pulse",
         status = "info",
         inline = TRUE
@@ -29,13 +29,13 @@ search <- tabItem(
           fade = TRUE,
           title = "What kind of search do you want?",
           content = c(
-            "You must choose between <b>Single Search</b> or <b>Doble Search</b>.",
+            "You must choose between <b>Single Search</b> or <b>Double Search</b>.",
             "",
             "<b>Single Search</b>:",
             "Single Search means you will be analyzing just one term individually.",
             "",
-            "<b>Doble Search</b>:",
-            "Doble Search means you will be analyzing two terms at the same time, 
+            "<b>Double Search</b>:",
+            "Double Search means you will be analyzing two terms at the same time, 
             if you choose this option, you will be able to compare both terms over the interface.",
             ""
           ),
