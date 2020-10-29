@@ -8,5 +8,5 @@ else
   mv credentials/twitter_credentials_env_template.R credentials/twitter_credentials.R
 
   echo "Running application."
-  Rscript app.R
+  R -e "shiny::runApp('app', host = '0.0.0.0', port = 3838)"
 fi
