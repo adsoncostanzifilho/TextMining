@@ -1,0 +1,13 @@
+version: '3'
+
+services:
+  text_mining:
+    build: .
+    ports:
+      - "3838:3838"
+    environment:
+      API_KEY: ${API_KEY}
+      API_SECRET: ${API_SECRET}
+      ACCESS_TOKEN: ${ACCESS_TOKEN}
+      ACCESS_SECRET: ${ACCESS_SECRET}
+      APP_NAME: ${APP_NAME}
