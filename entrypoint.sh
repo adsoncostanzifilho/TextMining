@@ -5,8 +5,8 @@ if [[ -z "${API_KEY}" ]] || [[ -z "${API_SECRET}" ]] || [[ -z "${ACCESS_TOKEN}" 
   exit 1;
 else
   echo "Creating twitter_credentials.R file."
-  mv credentials/twitter_credentials_env_template.R credentials/twitter_credentials.R
+  cp app/credentials/twitter_credentials_env_template.R app/credentials/twitter_credentials.R
 
   echo "Running application."
-  Rscript app.R
+  R -e "shiny::runApp('app', host = '0.0.0.0', port = 3838)"
 fi
