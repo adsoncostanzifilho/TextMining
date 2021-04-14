@@ -26,7 +26,7 @@ require(shinyjs)
 source('credentials/twitter_credentials.R')
 
 
-#- Create token to acess the twitter API
+#- Create token to access the twitter API
 create_token(
   app = app_name,
   consumer_key = api_key,
@@ -56,7 +56,7 @@ source('tabs/5_topic/topic_ui.R')
 
 
 #- MAIN UI START
-ui <- dashboardPagePlus(
+ui <- shinydashboardPlus::dashboardPage(
   title = "Text Mining Tool",
   skin = "blue-light",
   

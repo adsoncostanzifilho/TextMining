@@ -1,5 +1,4 @@
 #--- FUNCTIONS ---#
-require(twitteR)
 require(dplyr)
 require(magrittr)
 require(purrr)

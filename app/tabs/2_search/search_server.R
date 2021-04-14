@@ -191,62 +191,65 @@ preview_ui <- eventReactive(input$search,{
         
         hr(),
         
-        widgetUserBox(
+        userBox(
           width = 10,
-          title = db$name[1],
-          subtitle = HTML(
-            paste0(
-              '<p>',db$description[1],'<p>',
-              '<a href="',
-              db$status_url[1], 
-              '" target="_blank" class="btn btn-twitter"><i class="fab fa-twitter left"></i></a>')
+          title = userDescription(
+            title = db$name[1],
+            subtitle = HTML(
+              paste0(
+                '<p>',db$description[1],'<p>',
+                '<a href="',
+                db$status_url[1], 
+                '" target="_blank" class="btn btn-twitter"><i class="fab fa-twitter left"></i></a>')
+            ),
+            type = 2,
+            image = db$profile_image_url[1],
+            backgroundImage = db$profile_background_url[1],
           ),
-          type = 2,
-          src = db$profile_image_url[1],
-          background = TRUE,
-          backgroundUrl = db$profile_background_url[1],
-          footer = db$text[1],
-          closable = FALSE,
-          collapsible = FALSE
+          collapsible = FALSE,
+          footer = db$text[1]
         ),
         
-        widgetUserBox(
+        
+        userBox(
           width = 10,
-          title = db$name[2],
-          subtitle = HTML(
-            paste0(
-              '<p>',db$description[2],'<p>',
-              '<a href="',
-              db$status_url[2], 
-              '" target="_blank" class="btn btn-twitter"><i class="fab fa-twitter left"></i></a>')
+          title = userDescription(
+            title = db$name[2],
+            subtitle = HTML(
+              paste0(
+                '<p>',db$description[2],'<p>',
+                '<a href="',
+                db$status_url[2], 
+                '" target="_blank" class="btn btn-twitter"><i class="fab fa-twitter left"></i></a>')
+            ),
+            type = 2,
+            image = db$profile_image_url[2],
+            backgroundImage = db$profile_background_url[2],
           ),
-          type = 2,
-          src = db$profile_image_url[2],
-          background = TRUE,
-          backgroundUrl = db$profile_background_url[2],
-          footer = db$text[2],
-          closable = FALSE,
-          collapsible = FALSE
+          collapsible = FALSE,
+          footer = db$text[2]
         ),
         
-        widgetUserBox(
+        
+        userBox(
           width = 10,
-          title = db$name[3],
-          subtitle = HTML(
-            paste0(
-              '<p>',db$description[3],'<p>',
-              '<a href="',
-              db$status_url[3], 
-              '" target="_blank" class="btn btn-twitter"><i class="fab fa-twitter left"></i></a>')
+          title = userDescription(
+            title = db$name[3],
+            subtitle = HTML(
+              paste0(
+                '<p>',db$description[3],'<p>',
+                '<a href="',
+                db$status_url[3], 
+                '" target="_blank" class="btn btn-twitter"><i class="fab fa-twitter left"></i></a>')
+            ),
+            type = 2,
+            image = db$profile_image_url[3],
+            backgroundImage = db$profile_background_url[3],
           ),
-          type = 2,
-          src = db$profile_image_url[3],
-          background = TRUE,
-          backgroundUrl = db$profile_background_url[3],
-          footer = db$text[3],
-          closable = FALSE,
-          collapsible = FALSE
+          collapsible = FALSE,
+          footer = db$text[3]
         )
+      
         
       )
     )
@@ -277,61 +280,63 @@ preview_ui <- eventReactive(input$search,{
           
           hr(),
           
-          widgetUserBox(
+          userBox(
             width = 11,
-            title = db1$name[1], 
-            subtitle = HTML(
-              paste0(
-                '<p>',db1$description[1],'<p>',
-                '<a href="',
-                db1$status_url[1], 
-                '" target="_blank" class="btn btn-twitter"><i class="fab fa-twitter rigth"></i></a>')
-            ), 
-            type = 2,
-            src = db1$profile_image_url[1],
-            background = TRUE,
-            backgroundUrl = db1$profile_background_url[1],
-            footer = db1$text[1],
-            closable = FALSE,
-            collapsible = FALSE
-          ),
-          
-          widgetUserBox(
-            width = 11,
-            title = db1$name[2],  
-            subtitle = HTML(
-              paste0(
-                '<p>',db1$description[2],'<p>',
-                '<a href="',
-                db1$status_url[2], 
-                '" target="_blank" class="btn btn-twitter"><i class="fab fa-twitter left"></i></a>')
+            title = userDescription(
+              title = db1$name[1],
+              subtitle = HTML(
+                paste0(
+                  '<p>',db1$description[1],'<p>',
+                  '<a href="',
+                  db1$status_url[1], 
+                  '" target="_blank" class="btn btn-twitter"><i class="fab fa-twitter left"></i></a>')
+              ),
+              type = 2,
+              image = db1$profile_image_url[1],
+              backgroundImage = db1$profile_background_url[1],
             ),
-            type = 2,
-            src = db1$profile_image_url[2],
-            background = TRUE,
-            backgroundUrl = db1$profile_background_url[2],
-            footer = db1$text[2],
-            closable = FALSE,
-            collapsible = FALSE
+            collapsible = FALSE,
+            footer = db1$text[1]
           ),
           
-          widgetUserBox(
+          
+          userBox(
             width = 11,
-            title = db1$name[3],
-            subtitle = HTML(
-              paste0(
-                '<p>',db1$description[3],'<p>',
-                '<a href="',
-                db1$status_url[3], 
-                '" target="_blank" class="btn btn-twitter"><i class="fab fa-twitter left"></i></a>')
-            ), 
-            type = 2,
-            src = db1$profile_image_url[3],
-            background = TRUE,
-            backgroundUrl = db1$profile_background_url[3],
-            footer = db1$text[3],
-            closable = FALSE,
-            collapsible = FALSE
+            title = userDescription(
+              title = db1$name[2],
+              subtitle = HTML(
+                paste0(
+                  '<p>',db1$description[2],'<p>',
+                  '<a href="',
+                  db1$status_url[2], 
+                  '" target="_blank" class="btn btn-twitter"><i class="fab fa-twitter left"></i></a>')
+              ),
+              type = 2,
+              image = db1$profile_image_url[2],
+              backgroundImage = db1$profile_background_url[2],
+            ),
+            collapsible = FALSE,
+            footer = db1$text[2]
+          ),
+          
+          
+          userBox(
+            width = 11,
+            title = userDescription(
+              title = db1$name[3],
+              subtitle = HTML(
+                paste0(
+                  '<p>',db1$description[3],'<p>',
+                  '<a href="',
+                  db1$status_url[3], 
+                  '" target="_blank" class="btn btn-twitter"><i class="fab fa-twitter left"></i></a>')
+              ),
+              type = 2,
+              image = db1$profile_image_url[3],
+              backgroundImage = db1$profile_background_url[3],
+            ),
+            collapsible = FALSE,
+            footer = db1$text[3]
           )
           
         ),
@@ -344,65 +349,67 @@ preview_ui <- eventReactive(input$search,{
           
           hr(),
           
-          widgetUserBox(
+          userBox(
             width = 11,
-            title = db2$name[1],
-            subtitle = HTML(
-              paste0(
-                '<p>',db2$description[1],'<p>',
-                '<a href="',
-                db2$status_url[1], 
-                '" target="_blank" class="btn btn-twitter"><i class="fab fa-twitter left"></i></a>')
+            title = userDescription(
+              title = db2$name[1],
+              subtitle = HTML(
+                paste0(
+                  '<p>',db2$description[1],'<p>',
+                  '<a href="',
+                  db2$status_url[1], 
+                  '" target="_blank" class="btn btn-twitter"><i class="fab fa-twitter left"></i></a>')
+              ),
+              type = 2,
+              image = db2$profile_image_url[1],
+              backgroundImage = db2$profile_background_url[1],
             ),
-            type = 2,
-            src = db2$profile_image_url[1],
-            background = TRUE,
-            backgroundUrl = db2$profile_background_url[1],
-            footer = db2$text[1],
-            closable = FALSE,
-            collapsible = FALSE
+            collapsible = FALSE,
+            footer = db2$text[1]
           ),
           
-          widgetUserBox(
+          
+          userBox(
             width = 11,
-            title = db2$name[2],
-            subtitle = HTML(
-              paste0(
-                '<p>',db2$description[2],'<p>',
-                '<a href="',
-                db2$status_url[2], 
-                '" target="_blank" class="btn btn-twitter"><i class="fab fa-twitter left"></i></a>')
-            ), 
-            type = 2,
-            src = db2$profile_image_url[2],
-            background = TRUE,
-            backgroundUrl = db2$profile_background_url[2],
-            footer = db2$text[2],
-            closable = FALSE,
-            collapsible = FALSE
+            title = userDescription(
+              title = db2$name[2],
+              subtitle = HTML(
+                paste0(
+                  '<p>',db2$description[2],'<p>',
+                  '<a href="',
+                  db2$status_url[2], 
+                  '" target="_blank" class="btn btn-twitter"><i class="fab fa-twitter left"></i></a>')
+              ),
+              type = 2,
+              image = db2$profile_image_url[2],
+              backgroundImage = db2$profile_background_url[2],
+            ),
+            collapsible = FALSE,
+            footer = db2$text[2]
           ),
           
-          widgetUserBox(
+          
+          userBox(
             width = 11,
-            title = db2$name[3],  
-            subtitle = HTML(
-              paste0(
-                '<p>',db2$description[3],'<p>',
-                '<a href="',
-                db2$status_url[3], 
-                '" target="_blank" class="btn btn-twitter"><i class="fab fa-twitter left"></i></a>')
-            ), 
-            type = 2,
-            src = db2$profile_image_url[3],
-            background = TRUE,
-            backgroundUrl = db2$profile_background_url[3],
-            footer = db2$text[3],
-            closable = FALSE,
-            collapsible = FALSE
+            title = userDescription(
+              title = db2$name[3],
+              subtitle = HTML(
+                paste0(
+                  '<p>',db2$description[3],'<p>',
+                  '<a href="',
+                  db2$status_url[3], 
+                  '" target="_blank" class="btn btn-twitter"><i class="fab fa-twitter left"></i></a>')
+              ),
+              type = 2,
+              image = db2$profile_image_url[3],
+              backgroundImage = db2$profile_background_url[3],
+            ),
+            collapsible = FALSE,
+            footer = db2$text[3]
           )
         
+          
         )
-        
       )
     )
     
